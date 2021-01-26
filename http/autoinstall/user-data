@@ -1,0 +1,38 @@
+# TODO
+
+#cloud-config
+autoinstall:
+  version: 1
+  locale: ja_JP
+  keyboard:
+    layout: jp
+  network:
+    network:
+      version: 2
+      ethernets:
+        ens33:
+          dhcp4: true
+  storage:
+    layout:
+      name: lvm
+    config:
+      - type: disk
+        id: vda
+        match:
+          size: largest
+      - type: partition
+        id: boot-partition
+        device: vda
+        size: 500M
+      - type: partition
+        id: root-partition
+        device: vda
+        size: -1
+  identity:
+    hostname: ubuntu
+    username: ubuntu
+    password: $6$SfMLw6F.CeQ4Xzk5$5TEJK5BPns0O1.MNaa8VSwg7Na8os7zBeGMd5c5w6CzxUIj.hbbziUbJfBdHWmeXPrYpGYbll8c3/.gLWADmC/
+  ssh:
+    install-server: yes
+  user-data:
+    disable_root: false
