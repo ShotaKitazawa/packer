@@ -46,13 +46,13 @@ echo "==> Clearing last login information"
 
 # Whiteout root
 count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')
-let count--
+count=$(expr $count - 1)
 dd if=/dev/zero of=/tmp/whitespace bs=1024 count=$count
 rm /tmp/whitespace
 
 # Whiteout /boot
 count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')
-let count--
+count=$(expr $count - 1)
 dd if=/dev/zero of=/boot/whitespace bs=1024 count=$count
 rm /boot/whitespace
 
@@ -62,6 +62,8 @@ rm -f /EMPTY
 
 # Make sure we wait until all the data is written to disk, otherwise
 # Packer might quite too early before the large files are deleted
+sync
+sync
 sync
 
 echo "==> Disk usage before cleanup"
